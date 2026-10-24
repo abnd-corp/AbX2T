@@ -32,9 +32,9 @@ C'est l'opération de maintenance principale. Tout part de [`VERSIONS`](../VERSI
 ## Releases et tags
 
 - Numérotation **alignée sur ONLYOFFICE** : le tag AbX2T reprend
-  `ONLYOFFICE_CORE_BUILD` (ex. `v9.4.0.129`). Règle de lecture : si la version d'AbX2T
+  `ONLYOFFICE_CORE_BUILD` (ex. `v10.0.0.169`). Règle de lecture : si la version d'AbX2T
   est la dernière version ONLYOFFICE, on est à jour.
-- Correctif du wrapper entre deux versions ONLYOFFICE : suffixer (`v9.4.0.129-2`) pour
+- Correctif du wrapper entre deux versions ONLYOFFICE : suffixer (`v10.0.0.169-2`) pour
   ne pas casser la correspondance.
 - Publier avec chaque release les **SHA-256 des exécutables** (SmartScreen/Gatekeeper :
   binaires non signés, l'utilisateur doit pouvoir vérifier ce qu'il télécharge).
@@ -80,4 +80,4 @@ production des exécutables (l'AOT ne cross-compile pas).
 
 ---
 
-*Documentation à jour au commit `1fe36b8`.*
+*Documentation mise à jour pour ONLYOFFICE 10.0.0 (core 10.0.0.169).*

@@ -8,8 +8,8 @@ d'AbX2T lui-même :
 
 | Clé | Rôle |
 |---|---|
-| `ONLYOFFICE_VERSION` | Tag de la release DesktopEditors (3 composants, ex. `9.4.0`) — construit les URL de téléchargement |
-| `ONLYOFFICE_CORE_BUILD` | Build core/sdkjs correspondant (4 composants, ex. `9.4.0.129`) — version affichée par `--version`/`--license`, pointeur source AGPL, marqueur `resources/.version` |
+| `ONLYOFFICE_VERSION` | Tag de la release DesktopEditors (3 composants, ex. `10.0.0`) — construit les URL de téléchargement |
+| `ONLYOFFICE_CORE_BUILD` | Build core/sdkjs correspondant (4 composants, ex. `10.0.0.169`) — version affichée par `--version`/`--license`, pointeur source AGPL, marqueur `resources/.version` |
 | `SHA256_*` | Empreintes des artefacts officiels, vérifiées par les scripts fetch (vides = affichées au lieu d'être vérifiées, pour amorcer une nouvelle version) |
 
 Le fichier est parsé par MSBuild (`src/Abx2t.csproj`) et par les scripts fetch : garder
@@ -93,4 +93,4 @@ pour utiliser ou packager Abx2t si `allfontsgen/build/bin/` existe déjà.
 
 ---
 
-*Documentation à jour au commit `1fe36b8`.*
+*Documentation mise à jour pour ONLYOFFICE 10.0.0 (core 10.0.0.169).*

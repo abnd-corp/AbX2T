@@ -3,7 +3,7 @@
 #Requires -Version 5.1
 <#
 .SYNOPSIS
-Smoke test: converts build/testdata/sample.docx to PDF and TXT and checks the outputs.
+Smoke test: exercises DOCX/ODT and CSV/XLSX conversions, PDF output and batch mode.
 
 .DESCRIPTION
 Windows equivalent of build/smoke_test.sh: real Abx2t run (extraction + font
@@ -50,7 +50,15 @@ if ($ExePath) {
 }
 
 Write-Host '== --version'
-if ((Run --version) -ne 0) { Fail '--version failed' }
+if ($ExePath) {
+    $version = & $runner --version
+} else {
+    $version = & dotnet run --project (Join-Path $repo 'src') -c Release -- --version
+}
+if ($LASTEXITCODE -ne 0) { Fail '--version failed' }
+Write-Host $version
+$expected = ((Get-Content (Join-Path $repo 'VERSIONS') | Where-Object { $_ -match '^ONLYOFFICE_CORE_BUILD=' }) -split '=', 2)[1].Trim()
+if (-not $expected -or -not "$version".Contains("core build $expected)")) { Fail 'executable version does not match VERSIONS' }
 
 Write-Host '== docx -> pdf'
 $pdf = Join-Path $out 'sample.pdf'
@@ -64,6 +72,27 @@ Write-Host '== docx -> txt'
 $txt = Join-Path $out 'sample.txt'
 if ((Run --timeout 10 $sample $txt) -ne 0) { Fail 'docx->txt conversion failed' }
 if (-not (Select-String -Path $txt -Pattern 'quick brown fox' -Quiet)) { Fail 'converted text does not contain the sample sentence' }
+
+Write-Host '== docx -> odt -> txt'
+$odt = Join-Path $out 'sample.odt'
+$roundtripTxt = Join-Path $out 'roundtrip.txt'
+if ((Run --timeout 10 $sample $odt) -ne 0) { Fail 'docx->odt conversion failed' }
+if ((Run --timeout 10 $odt $roundtripTxt) -ne 0) { Fail 'odt->txt conversion failed' }
+if (-not (Select-String -Path $roundtripTxt -Pattern 'quick brown fox' -Quiet)) { Fail 'ODT round-trip lost the sample sentence' }
+
+Write-Host '== csv -> xlsx -> csv/pdf'
+$csv = Join-Path $out 'table.csv'
+$xlsx = Join-Path $out 'table.xlsx'
+$roundtripCsv = Join-Path $out 'roundtrip.csv'
+$tablePdf = Join-Path $out 'table.pdf'
+[System.IO.File]::WriteAllText($csv, "Name,Value`nAbx2t,42`n")
+if ((Run --timeout 10 $csv $xlsx) -ne 0) { Fail 'csv->xlsx conversion failed' }
+if ((Run --timeout 10 $xlsx $roundtripCsv) -ne 0) { Fail 'xlsx->csv conversion failed' }
+if (-not (Select-String -Path $roundtripCsv -Pattern 'Abx2t' -Quiet)) { Fail 'XLSX round-trip lost the text cell' }
+if (-not (Select-String -Path $roundtripCsv -Pattern '42' -Quiet)) { Fail 'XLSX round-trip lost the numeric cell' }
+if ((Run --timeout 10 $xlsx $tablePdf) -ne 0) { Fail 'xlsx->pdf conversion failed' }
+$head = [System.Text.Encoding]::ASCII.GetString((Get-Content $tablePdf -AsByteStream -TotalCount 4))
+if ($head -ne '%PDF') { Fail 'table.pdf does not start with %PDF' }
 
 Write-Host '== batch mode'
 $batchIn  = Join-Path $out 'batch_in'
