@@ -1,0 +1,16 @@
+# Mises à jour automatiques des dépendances (R24).
+# Chaque lundi, Dependabot ouvre des PR vers dev ; elles passent par les mêmes contrôles que le reste.
+# Une version n'est proposée qu'après 7 jours de quarantaine ; les correctifs de sécurité passent sans attendre.
+# Le préfixe « chore » respecte le contrôle de titre en Conventional Commits (R5).
+version: 2
+
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    target-branch: dev
+    schedule: { interval: monthly }
+    cooldown: { default-days: 7 }
+    commit-message: { prefix: ci }
+    groups:
+      actions:
+        patterns: ["*"]
