@@ -11,7 +11,7 @@ import tempfile
 from pathlib import Path
 from zipfile import ZIP_STORED, ZipFile, ZipInfo
 
-from corpus_test import MANIFEST, REPO, run
+from corpus_test import MANIFEST, REPO, prepare_testdata, report_html, run
 
 
 def fixture_bytes():
@@ -78,11 +78,11 @@ def is_fugaz(name):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--exe", type=Path)
-    parser.add_argument("--output", type=Path, default=REPO / "dist/font-tests")
+    parser.add_argument("--output", type=Path, default=REPO / "testdata")
     parser.add_argument("--write-fixture", action="store_true")
     args = parser.parse_args()
     root = MANIFEST.parent
-    source = root / "originals/abx2t/fugaz-one.docx"
+    source = root / "original/abx2t/fugaz-one.docx"
     if args.write_fixture:
         source.parent.mkdir(parents=True, exist_ok=True)
         source.write_bytes(fixture_bytes())
@@ -100,11 +100,10 @@ def main():
     if hashlib.sha256(font.read_bytes()).hexdigest() != fixture["font_sha256"]:
         parser.error("Font checksum mismatch")
     output = args.output.resolve()
-    if output.exists() and any(output.iterdir()):
-        parser.error("Use an empty output directory")
-    output.mkdir(parents=True, exist_ok=True)
-    shutil.copyfile(source, output / source.name)
-    shutil.copyfile(root / fixture["license_path"], output / "Fugaz-One-OFL.txt")
+    prepare_testdata(output)
+    converted = output / "converted/fonts"
+    converted.mkdir(parents=True, exist_ok=True)
+    (output / "results").mkdir(exist_ok=True)
     report = {"font": fixture, "cases": [], "production_code_modified": False}
     with tempfile.TemporaryDirectory(prefix="abx2t_font_") as temporary:
         runtime = Path(temporary)
@@ -122,7 +121,8 @@ def main():
                     custom = runtime / "custom-fonts"
                     custom.mkdir(exist_ok=True)
                     shutil.copyfile(font, custom / font.name)
-                pdf = output / (name + ".pdf")
+                pdf = converted / (name + ".pdf")
+                pdf.unlink(missing_ok=True)
                 result = run([str(exe), "--timeout", "2", str(source), str(pdf)])
                 case["run"] = result
                 if result["exit_code"] != 0:
@@ -146,7 +146,9 @@ def main():
                 print(f"{name}: FAIL: {error}", flush=True)
             report["cases"].append(case)
     report["passed"] = all(case["passed"] for case in report["cases"])
-    (output / "results.json").write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    (output / "results/fonts.json").write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    if (output / "results/corpus.json").is_file():
+        report_html(json.loads((output / "results/corpus.json").read_text(encoding="utf-8")), output)
     return 0 if report["passed"] else 1
 
 

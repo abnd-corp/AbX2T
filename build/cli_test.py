@@ -32,15 +32,13 @@ def find_shell(name):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--exe", required=True, type=Path)
-    parser.add_argument("--output", type=Path, default=REPO / "dist/cli-tests")
+    parser.add_argument("--output", type=Path, default=REPO / "testdata")
     parser.add_argument("--test-timeout", action="store_true", help="Unix: verify the real one-minute timeout and child cleanup")
     args = parser.parse_args()
     if not args.exe.is_file():
         parser.error("Executable missing")
     output = args.output.resolve()
-    if output.exists() and any(output.iterdir()):
-        parser.error("Use an empty output directory")
-    output.mkdir(parents=True, exist_ok=True)
+    (output / "results").mkdir(parents=True, exist_ok=True)
     cases = []
     skipped = []
 
@@ -62,7 +60,7 @@ def main():
         exe = root / ("Abx2t.exe" if args.exe.suffix.lower() == ".exe" else "Abx2t")
         shutil.copy2(args.exe.resolve(), exe)
         sample = root / "entrée avec espaces.docx"
-        shutil.copyfile(REPO / "build/testdata/sample.docx", sample)
+        shutil.copyfile(REPO / "testdata/original/abx2t/sample.docx", sample)
         source_hash = hashlib.sha256(sample.read_bytes()).hexdigest()
         for option in ("--help", "-h", "-?", "--version", "--license", "--licence", "--about"):
             check("information:" + option, [exe, option], contains="ONLYOFFICE" if option not in ("--help", "-h", "-?") else "Usage:")
@@ -173,7 +171,7 @@ def main():
     report = {"checks": cases, "skipped": skipped,
               "not_covered": ["Live UNC/SMB shares", "Unwritable install directory fallback on every OS"],
               "passed": all(not case["errors"] for case in cases)}
-    (output / "results.json").write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    (output / "results/cli.json").write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"{len(cases)} checks; {sum(bool(c['errors']) for c in cases)} failures; {len(skipped)} explicit skips", flush=True)
     return 0 if report["passed"] else 1
 

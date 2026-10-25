@@ -28,6 +28,12 @@
 /build/cache/
 /build/__pycache__/
 
+# Originaux et conversions de démonstration sont versionnables ensemble.
+# Seuls les rapports d'exécution et index générés restent locaux.
+/testdata/results/
+/testdata/index.html
+/testdata/TEST-RUN.json
+
 # x2t : binaires et JS ONLYOFFICE re-telechargeables (build/fetch_onlyoffice_*)
 /x2t/bin/
 /x2t/sdkjs/

@@ -23,7 +23,7 @@ from pathlib import Path
 from zipfile import BadZipFile, ZipFile
 
 REPO = Path(__file__).resolve().parent.parent
-MANIFEST = REPO / "build/testdata/corpus/manifest.json"
+MANIFEST = REPO / "testdata/manifest.json"
 WORD_NS = "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}"
 
 
@@ -178,91 +178,50 @@ def escape(value):
     return html.escape(str(value), quote=True)
 
 
+def prepare_testdata(output):
+    """Use one root containing source fixtures and generated converted/results folders."""
+    output.mkdir(parents=True, exist_ok=True)
+    if output.resolve() == MANIFEST.parent.resolve():
+        return
+    for name in ("manifest.json", "ATTRIBUTIONS.md", "README.md"):
+        shutil.copyfile(MANIFEST.parent / name, output / name)
+    for name in ("original", "licenses", "fonts"):
+        shutil.copytree(MANIFEST.parent / name, output / name, dirs_exist_ok=True)
+
+
 def report_html(report, output):
-    sections = []
+    rows = []
     for case in report["cases"]:
-        ident = case["id"]
-        source = f"{ident}/{case['filename']}"
-        original_image = case.get("previews", {}).get("source")
-        pdf_images = case.get("previews", {}).get("pdf", [])
-        original = (f'<img loading="lazy" src="{escape(ident)}/{escape(original_image)}" '
-                    'alt="Aperçu direct de l’original par macOS">') if original_image else "<p>Ouvrir le fichier original pour contrôler son rendu.</p>"
-        rendered = "".join(f'<figure data-page="{i}" {"hidden" if i > 1 else ""}><img loading="lazy" src="{escape(ident)}/{escape(image)}" '
-                           f'alt="Page PDF {i}"><figcaption>Page {i}</figcaption></figure>'
-                           for i, image in enumerate(pdf_images, 1))
-        if pdf_images:
-            options = "".join(f'<option value="{i}">{i} / {len(pdf_images)}</option>'
-                              for i in range(1, len(pdf_images) + 1))
-            rendered = f'<label>Page PDF <select class="page-picker">{options}</select></label>' + rendered
-        if not rendered:
-            rendered = "<p>Ouvrir le PDF pour contrôler son rendu.</p>"
-        conversions = case.get("conversions", [])
-        links = " · ".join(f'<a href="{escape(ident)}/{escape(c["filename"])}">{escape(c["format"].upper())}</a>'
-                           for c in conversions if c.get("exists"))
-        failures = case.get("errors", []) + [f'{c["format"]}: {message}' for c in conversions for message in c["errors"]]
-        known = [item for c in conversions for item in c.get("known_content_issues", [])]
-        status = ("Alertes de contenu connues — voir les détails" if known and not case.get("blocking_errors")
-                  else "ÉCHEC technique" if failures else "Contrôles techniques passés — rendu à vérifier")
-        pdf = next((c for c in conversions if c["format"] == "pdf"), {})
-        pdf_details = pdf.get("inspection", {})
-        font_info = pdf_details.get("pdffonts", {}).get("stdout", "Non inspecté : pdffonts absent.")
-        font_list = ", ".join(case.get("requested_fonts", [])) or "Voir le fichier original (polices binaires ou héritées)."
-        content_fonts = ", ".join(case.get("content_fonts", [])) or "Polices héritées des styles/thèmes ; pas de famille imposée directement."
-        notes = case.get("previews", {}).get("notes", [])
-        sections.append(f'''
-<section id="{escape(ident)}" data-search="{escape(' '.join([ident, case['title'], *case['tags']]).lower())}">
-<h2>{escape(case['title'])}</h2>
-<p class="tags">{escape(' · '.join(case['tags']))}</p>
-<p class="status {'failure' if failures else ''}">{escape(status)}</p>
-<p><a href="{escape(source)}">Original {escape(Path(case['filename']).suffix.upper())}</a> · {links} ·
-<a href="{escape(case['source_page'])}">Provenance</a> · <a href="{escape(ident)}/result.json">Détails du test</a></p>
-<p>{escape(str(pdf_details.get('pages', '?')))} page(s) PDF ; {escape(str(pdf_details.get('text_characters', '?')))} caractères extraits.</p>
-{'<pre class="failure">' + escape(chr(10).join(failures)) + '</pre>' if failures else ''}
-<div class="comparison"><div><h3>Original — fichier source</h3>{original}
-<p>L’aperçu peut différer de Word. Ouvrir l’original dans Word/ONLYOFFICE pour contrôler toutes les pages.</p></div>
-<div><h3>PDF produit par AbX2T / ONLYOFFICE 10</h3>{rendered}</div></div>
-<details><summary>Polices du document et présentes dans le PDF</summary><p>Formatage direct du contenu : {escape(content_fonts)}</p>
-<p>Ensemble des styles et thèmes : {escape(font_list)}</p><pre>{escape(font_info)}</pre>
-<p>La liste source inclut les styles et thèmes, même inutilisés. Une différence de nom ne prouve pas à elle seule une substitution.</p></details>
-<p>{escape(' '.join(notes))}</p></section>''')
+        links = " · ".join(
+            f'<a href="converted/{escape(case["id"])}/{escape(c["filename"])}">{escape(c["format"].upper())}</a>'
+            for c in case["conversions"] if c.get("exists"))
+        rows.append(f'<tr><td>{escape(case["title"])}</td><td><a href="{escape(case["path"])}">'
+                    f'{escape(case["filename"])}</a></td><td>{links}</td></tr>')
+    font_source = json.loads((output / "manifest.json").read_text(encoding="utf-8"))["font_fixture"]["document_path"]
+    font_links = []
+    for filename, label in (("01-missing-font.pdf", "Cas 1 : police absente"),
+                            ("02-manually-added-font.pdf", "Cas 2 : police ajoutée manuellement")):
+        if (output / "converted/fonts" / filename).is_file():
+            font_links.append(f'<a href="converted/fonts/{filename}">{label}</a>')
+    if font_links:
+        rows.append(f'<tr><td>Police Fugaz One : même original, deux scénarios</td>'
+                    f'<td><a href="{escape(font_source)}">fugaz-one.docx</a></td>'
+                    f'<td>{" · ".join(font_links)}</td></tr>')
     document = '''<!doctype html><html lang="fr"><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>AbX2T — contrôle visuel du corpus</title><style>
-body{font:16px/1.5 system-ui,sans-serif;background:#f3f4f7;color:#182238;margin:0;padding:24px}[hidden]{display:none!important}
-main{max-width:1500px;margin:auto}h1{font-size:28px}h2{font-size:22px;margin-bottom:5px}
-section{background:white;border:1px solid #d6dbe4;border-radius:12px;padding:24px;margin:24px 0}
-a{color:#1259a7}input{font:inherit;padding:12px;width:min(90%,650px);border:1px solid #aab4c4;border-radius:6px}
-.comparison{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
-.comparison img{display:block;width:100%;height:auto;border:1px solid #d6dbe4;box-sizing:border-box}
-figure{margin:0 0 16px}figcaption,.tags{color:#53627b}h3{font-size:16px}.status{font-weight:600;color:#314b70}
-.failure{color:#a11d24}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#f4f5f8;padding:12px;font-size:13px}
-@media(max-width:800px){body{padding:12px}.comparison{grid-template-columns:1fr}section{padding:16px}}
-</style><main><h1>Originaux et conversions AbX2T</h1>
-<p>Les DOCX/DOC originaux sont conservés sans modification dans Git et vérifiés par SHA-256. Les aperçus facultatifs viennent directement de macOS Quick Look.
-Aucun PDF de référence ni second moteur de conversion PDF n’est utilisé.</p>
-<p>Les vérifications techniques ne valident pas la fidélité visuelle. Contrôler notamment les polices, retours à la ligne, tableaux, images et sauts de page.
-Les originaux et toutes les sorties sont accessibles ci-dessous. Les aperçus PDF sont limités au nombre de pages indiqué dans les paramètres du rapport.</p>
-<p><a href="results.json">Résultats et paramètres JSON</a> · <a href="manifest.json">Sources et empreintes</a> · <a href="ATTRIBUTIONS.md">Attributions et licences</a></p>
-<label>Filtrer les documents <input id="filter" type="search" placeholder="DOCX, arabe, tableaux, images…"></label>
-'''
-    conversion_failures = sum(bool(c["errors"]) for case in report["cases"] for c in case["conversions"])
-    document += f'<p><strong>{len(report["cases"])} documents · {report["conversion_count"]} conversions · {conversion_failures} conversion(s) signalée(s) par les contrôles.</strong></p>'
-    document += "".join(sections)
-    document += '''</main><script>
-document.querySelector('#filter').addEventListener('input',event=>{
- const query=event.target.value.toLowerCase();
- document.querySelectorAll('section').forEach(section=>section.hidden=!section.dataset.search.includes(query));
-});
-document.querySelectorAll('.page-picker').forEach(select=>select.addEventListener('change',()=>{
- select.closest('section').querySelectorAll('figure[data-page]').forEach(figure=>figure.hidden=figure.dataset.page!==select.value);
-}));</script></html>'''
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>AbX2T — testdata</title>
+<style>body{font:16px/1.6 system-ui,sans-serif;margin:32px;color:#182238}table{border-collapse:collapse;width:100%}td,th{text-align:left;padding:12px;border-bottom:1px solid #ddd}a{color:#155ca1}</style>
+<h1>Originaux et conversions</h1><p>Un seul jeu de données : <code>original/</code> et <code>converted/</code>.
+Comparer directement les fichiers originaux aux sorties. Aucun PDF de référence ni verdict visuel.</p>
+<p><a href="README.md">Organisation et scénarios de police</a> · <a href="ATTRIBUTIONS.md">Attributions et licences</a> · <a href="results/corpus.json">Résultats du corpus</a></p>
+<table><thead><tr><th>Document</th><th>Original</th><th>Converted</th></tr></thead><tbody>'''
+    document += "".join(rows) + "</tbody></table></html>"
     (output / "index.html").write_text(document, encoding="utf-8")
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--exe", type=Path, help="Published AbX2T executable")
-    parser.add_argument("--output", type=Path, default=REPO / "dist/corpus")
+    parser.add_argument("--output", type=Path, default=REPO / "testdata")
     parser.add_argument("--cache", type=Path, default=REPO / "build/cache/corpus")
     parser.add_argument("--case", action="append", dest="ids", help="Case ID; repeat to select multiple cases")
     parser.add_argument("--download-only", action="store_true")
@@ -291,10 +250,8 @@ def main():
     if not args.download_only and (not args.exe or not args.exe.is_file()):
         parser.error("--exe must point to a published AbX2T executable")
     output = args.output.resolve()
-    output.mkdir(parents=True, exist_ok=True)
-    # Each run has its own directory: stale PDFs must never masquerade as successes.
-    if any((output / c["id"]).exists() for c in cases):
-        parser.error("Output already contains selected cases; use a new output directory")
+    prepare_testdata(output)
+    (output / "results").mkdir(exist_ok=True)
     report = {"platform": platform.platform(), "python": platform.python_version(),
               "visual_fidelity": "manual review required; no reference PDF",
               "max_preview_pages": args.max_preview_pages, "cases": []}
@@ -303,20 +260,23 @@ def main():
         report["version"] = run([str(args.exe), "--version"], timeout=30)
         if report["version"]["exit_code"]:
             parser.error("AbX2T --version failed")
-    (output / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    shutil.copyfile(MANIFEST.parent / "ATTRIBUTIONS.md", output / "ATTRIBUTIONS.md")
-    shutil.copytree(MANIFEST.parent / "licenses", output / "licenses", dirs_exist_ok=True)
-    shutil.copytree(MANIFEST.parent / "fonts", output / "fonts", dirs_exist_ok=True)
     failed = 0
     blocking_failures = 0
     for case in cases:
         print(f"== {case['id']}: {case['filename']}", flush=True)
-        folder = output / case["id"]
-        folder.mkdir()
+        folder = output / "converted" / case["id"]
+        if folder.is_symlink():
+            parser.error(f"Generated output must not be a symlink: {folder}")
+        if folder.exists():
+            shutil.rmtree(folder)
+        folder.mkdir(parents=True)
         entry = dict(case, conversions=[], errors=[], blocking_errors=[])
         try:
-            source = folder / case["filename"]
-            shutil.copyfile(fetch(case, args.cache.resolve(), args.offline), source)
+            verified = fetch(case, args.cache.resolve(), args.offline)
+            source = output / case["path"]
+            if verified.resolve() != source.resolve():
+                shutil.copyfile(verified, source)
+            verify_source(case, source.read_bytes())
             entry["requested_fonts"] = requested_fonts(source)
             entry["content_fonts"] = requested_fonts(source, content_only=True)
             if not args.download_only:
@@ -349,13 +309,12 @@ def main():
         entry["technical_pass"] = not entry["errors"] and all(not c["errors"] for c in entry["conversions"])
         failed += not entry["technical_pass"]
         blocking_failures += bool(entry["blocking_errors"])
-        (folder / "result.json").write_text(json.dumps(entry, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         report["cases"].append(entry)
     report["failed_cases"] = failed
     report["blocking_failed_cases"] = blocking_failures
     report["allow_known_content_issues"] = args.allow_known_content_issues
     report["conversion_count"] = sum(len(c["conversions"]) for c in report["cases"])
-    (output / "results.json").write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    (output / "results/corpus.json").write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     report_html(report, output)
     print(f"{len(cases)} cases, {report['conversion_count']} conversions, {failed} cases with alerts, {blocking_failures} blocking failures", flush=True)
     print(f"Visual review: {output / 'index.html'}", flush=True)

@@ -48,8 +48,10 @@ Source exacte : [fonts/fugaz-one/FugazOne-Regular.ttf](https://github.com/google
 
 ## Document du test de police
 
-`originals/abx2t/fugaz-one.docx` : document original du projet AbX2T, Copyright (C) 2026 Hugo Lagouardat (Abnd), AGPL-3.0-or-later. Sa source reproductible est `build/font_test.py --write-fixture`. Le document demande Fugaz One mais n’embarque pas la police. La police est ajoutée séparément au deuxième scénario.
+`original/abx2t/fugaz-one.docx` : document original du projet AbX2T, Copyright (C) 2026 Hugo Lagouardat (Abnd), AGPL-3.0-or-later. Sa source reproductible est `build/font_test.py --write-fixture`. Le document demande Fugaz One mais n’embarque pas la police. La police est ajoutée séparément au deuxième scénario.
 
 ## Sorties de conversion
 
-Les sorties sont générées dans `dist/` et ne sont pas commitées. Les archives de rendus des releases conservent cette attribution et les licences. Une conversion de format ne supprime pas les droits et obligations des documents et polices d’origine.
+Les sorties de `testdata/converted/` sont destinées à être versionnées avec les originaux pour la comparaison et la démonstration. Les archives de rendus des releases conservent également cette attribution et les licences. Une conversion de format ne supprime pas les droits et obligations des documents et polices d’origine : les mêmes attributions et conditions de redistribution restent applicables aux sorties.
+
+`original/abx2t/sample.docx` : petit document de smoke test du projet AbX2T, sous la licence AGPL-3.0-or-later du projet.

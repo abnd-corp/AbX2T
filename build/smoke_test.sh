@@ -14,7 +14,7 @@
 set -uo pipefail
 
 repo=$(cd -- "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
-sample="$repo/build/testdata/sample.docx"
+sample="$repo/testdata/original/abx2t/sample.docx"
 out=$(mktemp -d "${TMPDIR:-/tmp}/abx2t_smoke.XXXXXX")
 trap 'rm -rf "$out"' EXIT
 

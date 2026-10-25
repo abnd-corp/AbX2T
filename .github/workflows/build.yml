@@ -102,11 +102,11 @@ jobs:
         run: |
           extra=()
           if [[ "${{ runner.os }}" == Linux ]]; then extra+=(--require-pdf-tools); fi
-          python build/corpus_test.py --exe '${{ matrix.exe }}' --offline --allow-known-content-issues "${extra[@]}" --output dist/test-renders/corpus
+          python build/corpus_test.py --exe '${{ matrix.exe }}' --offline --allow-known-content-issues "${extra[@]}" --output testdata
 
       - name: Missing font and manually added font
         if: ${{ !cancelled() && steps.publish.outcome == 'success' }}
-        run: python build/font_test.py --exe ${{ matrix.exe }} --output dist/test-renders/fonts
+        run: python build/font_test.py --exe ${{ matrix.exe }} --output testdata
 
       - name: CLI, batch and script regression tests
         if: ${{ !cancelled() && steps.publish.outcome == 'success' }}
@@ -114,17 +114,17 @@ jobs:
         run: |
           extra=()
           if [[ "${{ runner.os }}" != Windows ]]; then extra+=(--test-timeout); fi
-          python build/cli_test.py --exe '${{ matrix.exe }}' "${extra[@]}" --output dist/test-renders/cli
+          python build/cli_test.py --exe '${{ matrix.exe }}' "${extra[@]}" --output testdata
 
       - name: Upload test outputs and diagnostics
         if: ${{ !cancelled() && steps.publish.outcome == 'success' }}
         uses: actions/upload-artifact@v4
         with:
-          name: test-renders-${{ matrix.platform }}
-          path: dist/test-renders/
+          name: testdata-${{ matrix.platform }}
+          path: testdata/
           if-no-files-found: error
 
-      - name: Assemble versioned test renders
+      - name: Assemble versioned testdata examples
         run: python build/package_test_renders.py --platform ${{ matrix.platform }}
 
       - name: Assemble distribution zip

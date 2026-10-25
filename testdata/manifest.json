@@ -26,7 +26,7 @@
         "txt"
       ],
       "expected_text": "This is a document with numbered lists",
-      "path": "originals/apache-poi/ComplexNumberedLists.docx",
+      "path": "original/apache-poi/ComplexNumberedLists.docx",
       "license": "Apache-2.0",
       "copyright": "Apache POI contributors; original embedded notices retained"
     },
@@ -48,7 +48,7 @@
         "odt"
       ],
       "expected_text": "Loren",
-      "path": "originals/apache-poi/table-alignment.docx",
+      "path": "original/apache-poi/table-alignment.docx",
       "license": "Apache-2.0",
       "copyright": "Apache POI contributors; original embedded notices retained"
     },
@@ -71,7 +71,7 @@
         "txt"
       ],
       "expected_text": "Sheet with various pictures",
-      "path": "originals/apache-poi/VariousPictures.docx",
+      "path": "original/apache-poi/VariousPictures.docx",
       "license": "Apache-2.0",
       "copyright": "Apache POI contributors; original embedded notices retained"
     },
@@ -94,7 +94,7 @@
         "txt"
       ],
       "expected_text": "This is a sample word document.",
-      "path": "originals/apache-poi/PageSpecificHeadFoot.docx",
+      "path": "original/apache-poi/PageSpecificHeadFoot.docx",
       "license": "Apache-2.0",
       "copyright": "Apache POI contributors; original embedded notices retained"
     },
@@ -118,7 +118,7 @@
         "odt"
       ],
       "expected_text": "إسبانيا",
-      "path": "originals/apache-poi/rtl.docx",
+      "path": "original/apache-poi/rtl.docx",
       "license": "Apache-2.0",
       "copyright": "Apache POI contributors; original embedded notices retained",
       "content_attribution": {
@@ -149,7 +149,7 @@
         "odt"
       ],
       "expected_text": "Floating text box",
-      "path": "originals/apache-poi/shapes-with-text.docx",
+      "path": "original/apache-poi/shapes-with-text.docx",
       "license": "Apache-2.0",
       "copyright": "Apache POI contributors; original embedded notices retained"
     },
@@ -171,7 +171,7 @@
         "txt"
       ],
       "expected_text": "I want more charts",
-      "path": "originals/apache-poi/chartex.docx",
+      "path": "original/apache-poi/chartex.docx",
       "license": "Apache-2.0",
       "copyright": "Apache POI contributors; original embedded notices retained"
     },
@@ -193,7 +193,7 @@
         "txt"
       ],
       "expected_text": "ILLUSTRATIVE CASES",
-      "path": "originals/apache-poi/IllustrativeCases.docx",
+      "path": "original/apache-poi/IllustrativeCases.docx",
       "license": "Apache-2.0",
       "copyright": "Apache POI contributors; original embedded notices retained"
     },
@@ -213,7 +213,7 @@
         "pdf",
         "txt"
       ],
-      "path": "originals/apache-poi/FloatingPictures.doc",
+      "path": "original/apache-poi/FloatingPictures.doc",
       "license": "Apache-2.0",
       "copyright": "Apache POI contributors; original embedded notices retained"
     },
@@ -233,7 +233,7 @@
         "pdf",
         "txt"
       ],
-      "path": "originals/apache-poi/57603-seven_columns.doc",
+      "path": "original/apache-poi/57603-seven_columns.doc",
       "license": "Apache-2.0",
       "copyright": "Apache POI contributors; original embedded notices retained"
     },
@@ -253,7 +253,7 @@
         "pdf",
         "txt"
       ],
-      "path": "originals/apache-poi/table-merges.doc",
+      "path": "original/apache-poi/table-merges.doc",
       "license": "Apache-2.0",
       "copyright": "Apache POI contributors; original embedded notices retained"
     },
@@ -273,7 +273,7 @@
         "pdf",
         "txt"
       ],
-      "path": "originals/apache-poi/WithArtShapes.doc",
+      "path": "original/apache-poi/WithArtShapes.doc",
       "license": "Apache-2.0",
       "copyright": "Apache POI contributors; original embedded notices retained"
     },
@@ -294,7 +294,7 @@
         "ods",
         "csv"
       ],
-      "path": "originals/apache-poi/WithThreeCharts.xlsx",
+      "path": "original/apache-poi/WithThreeCharts.xlsx",
       "license": "Apache-2.0",
       "copyright": "Apache POI contributors; original embedded notices retained"
     },
@@ -314,7 +314,7 @@
         "pdf",
         "xlsx"
       ],
-      "path": "originals/apache-poi/Formatting.xls",
+      "path": "original/apache-poi/Formatting.xls",
       "license": "Apache-2.0",
       "copyright": "Apache POI contributors; original embedded notices retained"
     },
@@ -334,7 +334,7 @@
         "pdf",
         "xlsx"
       ],
-      "path": "originals/apache-poi/SampleSS.ods",
+      "path": "original/apache-poi/SampleSS.ods",
       "license": "Apache-2.0",
       "copyright": "Apache POI contributors; original embedded notices retained"
     },
@@ -354,7 +354,7 @@
         "pdf",
         "odp"
       ],
-      "path": "originals/apache-poi/SampleShow.pptx",
+      "path": "original/apache-poi/SampleShow.pptx",
       "license": "Apache-2.0",
       "copyright": "Apache POI contributors; original embedded notices retained"
     },
@@ -375,7 +375,7 @@
       ],
       "upstream": "LibreOffice/core",
       "license": "MPL-2.0",
-      "path": "originals/libreoffice/tdf120344_FontTypes.docx",
+      "path": "original/libreoffice/tdf120344_FontTypes.docx",
       "copyright": "LibreOffice contributors; original embedded notices retained"
     },
     {
@@ -396,7 +396,7 @@
       ],
       "upstream": "LibreOffice/core",
       "license": "MPL-2.0",
-      "path": "originals/libreoffice/dml-groupshape-runfonts.docx",
+      "path": "original/libreoffice/dml-groupshape-runfonts.docx",
       "copyright": "LibreOffice contributors; original embedded notices retained"
     }
   ],
@@ -418,7 +418,7 @@
     "copyright": "Copyright (c) 2011 by LatinoType Limitada; Reserved Font Names Fugaz and Fugaz One",
     "url": "https://github.com/google/fonts/blob/0b82f9ec134be17ce44a1531636c81dacf8f7f1d/ofl/fugazone/FugazOne-Regular.ttf",
     "revision": "0b82f9ec134be17ce44a1531636c81dacf8f7f1d",
-    "document_path": "originals/abx2t/fugaz-one.docx",
+    "document_path": "original/abx2t/fugaz-one.docx",
     "document_sha256": "6b130583e4350b609b7ada9e5a68d91280410c0e12a11533efac1b4c6695f804",
     "document_license": "AGPL-3.0-or-later",
     "document_copyright": "Copyright (C) 2026 Hugo Lagouardat (Abnd); generated by build/font_test.py --write-fixture"

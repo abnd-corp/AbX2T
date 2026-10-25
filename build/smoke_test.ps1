@@ -26,7 +26,7 @@ param(
 $ErrorActionPreference = 'Stop'
 
 $repo   = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
-$sample = Join-Path $repo 'build\testdata\sample.docx'
+$sample = Join-Path $repo 'testdata\original\abx2t\sample.docx'
 $out    = Join-Path $env:TEMP "abx2t_smoke_$([guid]::NewGuid().ToString('N'))"
 New-Item -ItemType Directory -Force -Path $out | Out-Null
 
