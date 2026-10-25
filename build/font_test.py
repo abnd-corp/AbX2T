@@ -9,7 +9,7 @@ import re
 import shutil
 import tempfile
 from pathlib import Path
-from zipfile import ZIP_DEFLATED, ZipFile, ZipInfo
+from zipfile import ZIP_STORED, ZipFile, ZipInfo
 
 from corpus_test import MANIFEST, REPO, run
 
@@ -45,10 +45,14 @@ def fixture_bytes():
         '</w:sectPr></w:body></w:document>',
     }
     buffer = io.BytesIO()
-    with ZipFile(buffer, "w", compression=ZIP_DEFLATED) as archive:
+    # Fixed ZIP metadata and no compression make the committed bytes identical
+    # across Windows/Unix and different Python/zlib versions.
+    with ZipFile(buffer, "w", compression=ZIP_STORED) as archive:
         for name, contents in files.items():
             info = ZipInfo(name, date_time=(2026, 1, 1, 0, 0, 0))
-            info.compress_type = ZIP_DEFLATED
+            info.create_system = 3
+            info.external_attr = 0o600 << 16
+            info.compress_type = ZIP_STORED
             archive.writestr(info, contents.encode("utf-8"))
     return buffer.getvalue()
 
@@ -90,6 +94,8 @@ def main():
         parser.error("The committed font DOCX differs from its reproducible source")
     manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
     fixture = manifest["font_fixture"]
+    if hashlib.sha256(source.read_bytes()).hexdigest() != fixture["document_sha256"]:
+        parser.error("Font document checksum mismatch")
     font = root / fixture["font_path"]
     if hashlib.sha256(font.read_bytes()).hexdigest() != fixture["font_sha256"]:
         parser.error("Font checksum mismatch")

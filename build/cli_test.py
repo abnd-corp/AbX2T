@@ -14,6 +14,21 @@ from pathlib import Path
 from corpus_test import REPO, run
 
 
+def find_shell(name):
+    if os.name == "nt" and name == "bash":
+        # System32/bash.exe is a WSL launcher, not the Git Bash used by CI.
+        git = shutil.which("git")
+        roots = [Path(os.environ.get("ProgramFiles", "C:/Program Files")) / "Git"]
+        if git:
+            roots.insert(0, Path(git).resolve().parent.parent)
+        for root in roots:
+            candidate = root / "bin/bash.exe"
+            if candidate.is_file():
+                return str(candidate)
+        return None
+    return shutil.which(name)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--exe", required=True, type=Path)
@@ -139,14 +154,16 @@ def main():
     for folder in (REPO / "build", REPO / "allfontsgen/build/scripts", REPO / "x2t/build/scripts"):
         for script in sorted(folder.glob("*.sh")):
             shell = "zsh" if "zsh" in script.read_text(encoding="utf-8").splitlines()[0] else "bash"
-            if shutil.which(shell):
-                check("syntax:" + str(script.relative_to(REPO)), [shell, "-n", script])
+            binary = find_shell(shell)
+            if binary:
+                check("syntax:" + str(script.relative_to(REPO)), [binary, "-n", script.as_posix()])
             else:
                 skipped.append(f"{shell} absent: {script.relative_to(REPO)}")
     for script, shell in (("build/fetch_onlyoffice_linux.sh", "bash"), ("build/fetch_onlyoffice_macos.sh", "zsh")):
-        if shutil.which(shell):
-            check("help:" + script, [shell, REPO / script, "--help"], contains="Usage:")
-            check("invalid-option:" + script, [shell, REPO / script, "--not-an-option"], expected=1)
+        binary = find_shell(shell)
+        if binary:
+            check("help:" + script, [binary, (REPO / script).as_posix(), "--help"], contains="Usage:")
+            check("invalid-option:" + script, [binary, (REPO / script).as_posix(), "--not-an-option"], expected=1, contains="Unknown argument:")
     if shutil.which("pwsh"):
         command = "$errorsFound = @(); Get-ChildItem -Path build,allfontsgen/build/scripts,x2t/build/scripts -Filter *.ps1 | ForEach-Object { $tokens = $null; $parseErrors = $null; [System.Management.Automation.Language.Parser]::ParseFile($_.FullName, [ref]$tokens, [ref]$parseErrors) | Out-Null; $errorsFound += $parseErrors }; if ($errorsFound.Count) { $errorsFound | Out-String | Write-Error; exit 1 }; exit 0"
         result = subprocess.run(["pwsh", "-NoProfile", "-Command", command], cwd=REPO, capture_output=True)
