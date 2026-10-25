@@ -1,0 +1,442 @@
+{
+  "schema": 2,
+  "upstream": {
+    "project": "Apache POI",
+    "revision": "4f3c25563919e7efa4a75feccf6cef1ac3d05a04",
+    "license": "Apache-2.0",
+    "license_url": "https://github.com/apache/poi/blob/4f3c25563919e7efa4a75feccf6cef1ac3d05a04/legal/LICENSE",
+    "notice_url": "https://github.com/apache/poi/blob/4f3c25563919e7efa4a75feccf6cef1ac3d05a04/legal/NOTICE"
+  },
+  "cases": [
+    {
+      "id": "word-lists",
+      "title": "Listes à plusieurs niveaux et redémarrage de numérotation",
+      "filename": "ComplexNumberedLists.docx",
+      "url": "https://raw.githubusercontent.com/apache/poi/4f3c25563919e7efa4a75feccf6cef1ac3d05a04/test-data/document/ComplexNumberedLists.docx",
+      "source_page": "https://github.com/apache/poi/blob/4f3c25563919e7efa4a75feccf6cef1ac3d05a04/test-data/document/ComplexNumberedLists.docx",
+      "sha256": "297a085a7d433af2eeee7661e8db21539452cb585096484774a1e9f5f258b0b6",
+      "size": 14458,
+      "tags": [
+        "listes",
+        "retraits",
+        "Calibri (thème)"
+      ],
+      "outputs": [
+        "pdf",
+        "txt"
+      ],
+      "expected_text": "This is a document with numbered lists",
+      "path": "originals/apache-poi/ComplexNumberedLists.docx",
+      "license": "Apache-2.0",
+      "copyright": "Apache POI contributors; original embedded notices retained"
+    },
+    {
+      "id": "word-tables",
+      "title": "Tableaux et alignements de cellules",
+      "filename": "table-alignment.docx",
+      "url": "https://raw.githubusercontent.com/apache/poi/4f3c25563919e7efa4a75feccf6cef1ac3d05a04/test-data/document/table-alignment.docx",
+      "source_page": "https://github.com/apache/poi/blob/4f3c25563919e7efa4a75feccf6cef1ac3d05a04/test-data/document/table-alignment.docx",
+      "sha256": "ee36729e0d050e529fea0b444006a194bea72b35cf8958ae58c6624c26156b41",
+      "size": 15519,
+      "tags": [
+        "tableaux",
+        "alignements"
+      ],
+      "outputs": [
+        "pdf",
+        "txt",
+        "odt"
+      ],
+      "expected_text": "Loren",
+      "path": "originals/apache-poi/table-alignment.docx",
+      "license": "Apache-2.0",
+      "copyright": "Apache POI contributors; original embedded notices retained"
+    },
+    {
+      "id": "word-pictures",
+      "title": "Images JPEG, PNG et vectorielles",
+      "filename": "VariousPictures.docx",
+      "url": "https://raw.githubusercontent.com/apache/poi/4f3c25563919e7efa4a75feccf6cef1ac3d05a04/test-data/document/VariousPictures.docx",
+      "source_page": "https://github.com/apache/poi/blob/4f3c25563919e7efa4a75feccf6cef1ac3d05a04/test-data/document/VariousPictures.docx",
+      "sha256": "c1eecbca7de9f99e21c677e1d5b045eaa1d5a442eff4c82f0cbe9af93726a070",
+      "size": 103677,
+      "tags": [
+        "images",
+        "WMF",
+        "EMF",
+        "Tahoma"
+      ],
+      "outputs": [
+        "pdf",
+        "txt"
+      ],
+      "expected_text": "Sheet with various pictures",
+      "path": "originals/apache-poi/VariousPictures.docx",
+      "license": "Apache-2.0",
+      "copyright": "Apache POI contributors; original embedded notices retained"
+    },
+    {
+      "id": "word-sections",
+      "title": "Pages, en-têtes et pieds de page en colonnes",
+      "filename": "PageSpecificHeadFoot.docx",
+      "url": "https://raw.githubusercontent.com/apache/poi/4f3c25563919e7efa4a75feccf6cef1ac3d05a04/test-data/document/PageSpecificHeadFoot.docx",
+      "source_page": "https://github.com/apache/poi/blob/4f3c25563919e7efa4a75feccf6cef1ac3d05a04/test-data/document/PageSpecificHeadFoot.docx",
+      "sha256": "90bb8251b18c9f94e0b8fb91192413922a09dbe418a4a210116221054378eaad",
+      "size": 22994,
+      "tags": [
+        "sections",
+        "pagination",
+        "en-têtes",
+        "pieds de page"
+      ],
+      "outputs": [
+        "pdf",
+        "txt"
+      ],
+      "expected_text": "This is a sample word document.",
+      "path": "originals/apache-poi/PageSpecificHeadFoot.docx",
+      "license": "Apache-2.0",
+      "copyright": "Apache POI contributors; original embedded notices retained"
+    },
+    {
+      "id": "word-rtl",
+      "title": "Arabe et latin mélangés, écriture de droite à gauche",
+      "filename": "rtl.docx",
+      "url": "https://raw.githubusercontent.com/apache/poi/4f3c25563919e7efa4a75feccf6cef1ac3d05a04/test-data/document/rtl.docx",
+      "source_page": "https://github.com/apache/poi/blob/4f3c25563919e7efa4a75feccf6cef1ac3d05a04/test-data/document/rtl.docx",
+      "sha256": "d159b6ac6734f14a9ecf8e97ca5029bdcddbfae2d33ba0128aa774924e0b190d",
+      "size": 6838,
+      "tags": [
+        "arabe",
+        "RTL",
+        "Noto Sans Arabic UI",
+        "Liberation Serif"
+      ],
+      "outputs": [
+        "pdf",
+        "txt",
+        "odt"
+      ],
+      "expected_text": "إسبانيا",
+      "path": "originals/apache-poi/rtl.docx",
+      "license": "Apache-2.0",
+      "copyright": "Apache POI contributors; original embedded notices retained",
+      "content_attribution": {
+        "title": "إسبانيا",
+        "authors": "Arabic Wikipedia contributors",
+        "source": "https://ar.wikipedia.org/wiki/إسبانيا",
+        "history": "https://ar.wikipedia.org/w/index.php?title=إسبانيا&action=history",
+        "license": "CC-BY-SA-4.0",
+        "note": "Excerpt formatted in the upstream DOCX; AbX2T preserves the fixture unchanged."
+      }
+    },
+    {
+      "id": "word-shapes",
+      "title": "Zones de texte, formes et groupes",
+      "filename": "shapes-with-text.docx",
+      "url": "https://raw.githubusercontent.com/apache/poi/4f3c25563919e7efa4a75feccf6cef1ac3d05a04/test-data/document/shapes-with-text.docx",
+      "source_page": "https://github.com/apache/poi/blob/4f3c25563919e7efa4a75feccf6cef1ac3d05a04/test-data/document/shapes-with-text.docx",
+      "sha256": "1ef4d8cbfd5e2333897ab3193b58ce445cee7e45476d39e5626a4c7097f72d95",
+      "size": 27520,
+      "tags": [
+        "formes flottantes",
+        "zones de texte",
+        "Aptos"
+      ],
+      "outputs": [
+        "pdf",
+        "txt",
+        "odt"
+      ],
+      "expected_text": "Floating text box",
+      "path": "originals/apache-poi/shapes-with-text.docx",
+      "license": "Apache-2.0",
+      "copyright": "Apache POI contributors; original embedded notices retained"
+    },
+    {
+      "id": "word-charts",
+      "title": "Graphiques intégrés modernes",
+      "filename": "chartex.docx",
+      "url": "https://raw.githubusercontent.com/apache/poi/4f3c25563919e7efa4a75feccf6cef1ac3d05a04/test-data/document/chartex.docx",
+      "source_page": "https://github.com/apache/poi/blob/4f3c25563919e7efa4a75feccf6cef1ac3d05a04/test-data/document/chartex.docx",
+      "sha256": "5d7f0ca9aa26d0244eedbc8ff862f08910689ec3848a036c622b17d56a290b57",
+      "size": 133304,
+      "tags": [
+        "graphiques",
+        "images",
+        "Wingdings"
+      ],
+      "outputs": [
+        "pdf",
+        "txt"
+      ],
+      "expected_text": "I want more charts",
+      "path": "originals/apache-poi/chartex.docx",
+      "license": "Apache-2.0",
+      "copyright": "Apache POI contributors; original embedded notices retained"
+    },
+    {
+      "id": "word-report",
+      "title": "Document de quatre pages avec tableaux",
+      "filename": "IllustrativeCases.docx",
+      "url": "https://raw.githubusercontent.com/apache/poi/4f3c25563919e7efa4a75feccf6cef1ac3d05a04/test-data/document/IllustrativeCases.docx",
+      "source_page": "https://github.com/apache/poi/blob/4f3c25563919e7efa4a75feccf6cef1ac3d05a04/test-data/document/IllustrativeCases.docx",
+      "sha256": "4c2407d338f02a6ae107eac0b3e925ffb3d37921942ebe88db8660dea0891a00",
+      "size": 22858,
+      "tags": [
+        "multipage",
+        "tableaux",
+        "mise en page dense"
+      ],
+      "outputs": [
+        "pdf",
+        "txt"
+      ],
+      "expected_text": "ILLUSTRATIVE CASES",
+      "path": "originals/apache-poi/IllustrativeCases.docx",
+      "license": "Apache-2.0",
+      "copyright": "Apache POI contributors; original embedded notices retained"
+    },
+    {
+      "id": "legacy-pictures",
+      "title": "DOC historique avec images flottantes",
+      "filename": "FloatingPictures.doc",
+      "url": "https://raw.githubusercontent.com/apache/poi/4f3c25563919e7efa4a75feccf6cef1ac3d05a04/test-data/document/FloatingPictures.doc",
+      "source_page": "https://github.com/apache/poi/blob/4f3c25563919e7efa4a75feccf6cef1ac3d05a04/test-data/document/FloatingPictures.doc",
+      "sha256": "41cc0cd8f2d7390266f844f5bddbcd29d08ac5338abc33832d9c9a6ed5d0f85d",
+      "size": 335360,
+      "tags": [
+        "DOC binaire",
+        "images flottantes"
+      ],
+      "outputs": [
+        "pdf",
+        "txt"
+      ],
+      "path": "originals/apache-poi/FloatingPictures.doc",
+      "license": "Apache-2.0",
+      "copyright": "Apache POI contributors; original embedded notices retained"
+    },
+    {
+      "id": "legacy-columns",
+      "title": "DOC avec sept colonnes",
+      "filename": "57603-seven_columns.doc",
+      "url": "https://raw.githubusercontent.com/apache/poi/4f3c25563919e7efa4a75feccf6cef1ac3d05a04/test-data/document/57603-seven_columns.doc",
+      "source_page": "https://github.com/apache/poi/blob/4f3c25563919e7efa4a75feccf6cef1ac3d05a04/test-data/document/57603-seven_columns.doc",
+      "sha256": "1e37dac76f3690f88674b44558a73ff447946264250ed41ccb1a25e33b9988ef",
+      "size": 42496,
+      "tags": [
+        "DOC binaire",
+        "colonnes"
+      ],
+      "outputs": [
+        "pdf",
+        "txt"
+      ],
+      "path": "originals/apache-poi/57603-seven_columns.doc",
+      "license": "Apache-2.0",
+      "copyright": "Apache POI contributors; original embedded notices retained"
+    },
+    {
+      "id": "legacy-tables",
+      "title": "DOC avec cellules de tableau fusionnées",
+      "filename": "table-merges.doc",
+      "url": "https://raw.githubusercontent.com/apache/poi/4f3c25563919e7efa4a75feccf6cef1ac3d05a04/test-data/document/table-merges.doc",
+      "source_page": "https://github.com/apache/poi/blob/4f3c25563919e7efa4a75feccf6cef1ac3d05a04/test-data/document/table-merges.doc",
+      "sha256": "bceea684bbf492fae57da88a133c3fd7ea9abd8355a89c6b9f31b9b0e2d68d3e",
+      "size": 11264,
+      "tags": [
+        "DOC binaire",
+        "tableaux fusionnés"
+      ],
+      "outputs": [
+        "pdf",
+        "txt"
+      ],
+      "path": "originals/apache-poi/table-merges.doc",
+      "license": "Apache-2.0",
+      "copyright": "Apache POI contributors; original embedded notices retained"
+    },
+    {
+      "id": "legacy-shapes",
+      "title": "DOC avec formes dessinées",
+      "filename": "WithArtShapes.doc",
+      "url": "https://raw.githubusercontent.com/apache/poi/4f3c25563919e7efa4a75feccf6cef1ac3d05a04/test-data/document/WithArtShapes.doc",
+      "source_page": "https://github.com/apache/poi/blob/4f3c25563919e7efa4a75feccf6cef1ac3d05a04/test-data/document/WithArtShapes.doc",
+      "sha256": "7ea17063facd200d340f2d076727e819f557d307f506c640896e968d9bcab5c0",
+      "size": 53760,
+      "tags": [
+        "DOC binaire",
+        "dessins"
+      ],
+      "outputs": [
+        "pdf",
+        "txt"
+      ],
+      "path": "originals/apache-poi/WithArtShapes.doc",
+      "license": "Apache-2.0",
+      "copyright": "Apache POI contributors; original embedded notices retained"
+    },
+    {
+      "id": "sheets-charts",
+      "title": "Tableur avec trois graphiques",
+      "filename": "WithThreeCharts.xlsx",
+      "url": "https://raw.githubusercontent.com/apache/poi/4f3c25563919e7efa4a75feccf6cef1ac3d05a04/test-data/spreadsheet/WithThreeCharts.xlsx",
+      "source_page": "https://github.com/apache/poi/blob/4f3c25563919e7efa4a75feccf6cef1ac3d05a04/test-data/spreadsheet/WithThreeCharts.xlsx",
+      "sha256": "629b69bd250d9b4e173eb2088eb80b656b7748b0287cd7b0df0c2dc22c6af7b0",
+      "size": 13841,
+      "tags": [
+        "XLSX",
+        "graphiques"
+      ],
+      "outputs": [
+        "pdf",
+        "ods",
+        "csv"
+      ],
+      "path": "originals/apache-poi/WithThreeCharts.xlsx",
+      "license": "Apache-2.0",
+      "copyright": "Apache POI contributors; original embedded notices retained"
+    },
+    {
+      "id": "sheets-legacy",
+      "title": "Formats de cellules Excel historiques",
+      "filename": "Formatting.xls",
+      "url": "https://raw.githubusercontent.com/apache/poi/4f3c25563919e7efa4a75feccf6cef1ac3d05a04/test-data/spreadsheet/Formatting.xls",
+      "source_page": "https://github.com/apache/poi/blob/4f3c25563919e7efa4a75feccf6cef1ac3d05a04/test-data/spreadsheet/Formatting.xls",
+      "sha256": "807baef915bfa5ed0552617cfa944834fca732ed51a6c85797b1db4877ab9d80",
+      "size": 18432,
+      "tags": [
+        "XLS binaire",
+        "formats numériques"
+      ],
+      "outputs": [
+        "pdf",
+        "xlsx"
+      ],
+      "path": "originals/apache-poi/Formatting.xls",
+      "license": "Apache-2.0",
+      "copyright": "Apache POI contributors; original embedded notices retained"
+    },
+    {
+      "id": "sheets-ods",
+      "title": "Tableur OpenDocument",
+      "filename": "SampleSS.ods",
+      "url": "https://raw.githubusercontent.com/apache/poi/4f3c25563919e7efa4a75feccf6cef1ac3d05a04/test-data/spreadsheet/SampleSS.ods",
+      "source_page": "https://github.com/apache/poi/blob/4f3c25563919e7efa4a75feccf6cef1ac3d05a04/test-data/spreadsheet/SampleSS.ods",
+      "sha256": "a551ef35d3faddae4bf135960bde419f4a0140f9398c2218614b089ae8a4b46f",
+      "size": 20391,
+      "tags": [
+        "ODS",
+        "interopérabilité"
+      ],
+      "outputs": [
+        "pdf",
+        "xlsx"
+      ],
+      "path": "originals/apache-poi/SampleSS.ods",
+      "license": "Apache-2.0",
+      "copyright": "Apache POI contributors; original embedded notices retained"
+    },
+    {
+      "id": "slides",
+      "title": "Présentation avec plusieurs diapositives",
+      "filename": "SampleShow.pptx",
+      "url": "https://raw.githubusercontent.com/apache/poi/4f3c25563919e7efa4a75feccf6cef1ac3d05a04/test-data/slideshow/SampleShow.pptx",
+      "source_page": "https://github.com/apache/poi/blob/4f3c25563919e7efa4a75feccf6cef1ac3d05a04/test-data/slideshow/SampleShow.pptx",
+      "sha256": "bfb4b2f07c9233afd2f32aa5781d849d0c7d225bf03721a10becf487b481d828",
+      "size": 39083,
+      "tags": [
+        "PPTX",
+        "diapositives"
+      ],
+      "outputs": [
+        "pdf",
+        "odp"
+      ],
+      "path": "originals/apache-poi/SampleShow.pptx",
+      "license": "Apache-2.0",
+      "copyright": "Apache POI contributors; original embedded notices retained"
+    },
+    {
+      "id": "word-consolas",
+      "title": "Variantes de caractères en Consolas",
+      "filename": "tdf120344_FontTypes.docx",
+      "url": "https://raw.githubusercontent.com/LibreOffice/core/7d2daf6ce9564281493a6b644b3a56cd08490e76/sw/qa/extras/ooxmlexport/data/tdf120344_FontTypes.docx",
+      "source_page": "https://github.com/LibreOffice/core/blob/7d2daf6ce9564281493a6b644b3a56cd08490e76/sw/qa/extras/ooxmlexport/data/tdf120344_FontTypes.docx",
+      "sha256": "be1a88f4378b6b40ece0fc30534d55b6a5210c51c18fa4979685a788e2e41a0f",
+      "size": 13217,
+      "tags": [
+        "Consolas",
+        "typographie"
+      ],
+      "outputs": [
+        "pdf"
+      ],
+      "upstream": "LibreOffice/core",
+      "license": "MPL-2.0",
+      "path": "originals/libreoffice/tdf120344_FontTypes.docx",
+      "copyright": "LibreOffice contributors; original embedded notices retained"
+    },
+    {
+      "id": "word-font-shapes",
+      "title": "Polices explicites dans un groupe de formes",
+      "filename": "dml-groupshape-runfonts.docx",
+      "url": "https://raw.githubusercontent.com/LibreOffice/core/7d2daf6ce9564281493a6b644b3a56cd08490e76/sw/qa/extras/ooxmlexport/data/dml-groupshape-runfonts.docx",
+      "source_page": "https://github.com/LibreOffice/core/blob/7d2daf6ce9564281493a6b644b3a56cd08490e76/sw/qa/extras/ooxmlexport/data/dml-groupshape-runfonts.docx",
+      "sha256": "d512cead64915c3ec32089c86e83cf6ef5996aab083f7ff2119f46bb449a0a47",
+      "size": 16971,
+      "tags": [
+        "formes",
+        "Arial Unicode MS",
+        "MS Mincho"
+      ],
+      "outputs": [
+        "pdf"
+      ],
+      "upstream": "LibreOffice/core",
+      "license": "MPL-2.0",
+      "path": "originals/libreoffice/dml-groupshape-runfonts.docx",
+      "copyright": "LibreOffice contributors; original embedded notices retained"
+    }
+  ],
+  "additional_upstreams": [
+    {
+      "project": "LibreOffice/core",
+      "revision": "7d2daf6ce9564281493a6b644b3a56cd08490e76",
+      "license": "MPL-2.0",
+      "license_url": "https://github.com/LibreOffice/core/blob/7d2daf6ce9564281493a6b644b3a56cd08490e76/COPYING.MPL"
+    }
+  ],
+  "font_fixture": {
+    "family": "Fugaz One",
+    "postscript_name": "FugazOne-Regular",
+    "font_path": "fonts/fugaz-one/FugazOne-Regular.ttf",
+    "font_sha256": "14fd5becce8b0ae987e44b3f9fa9e3e6c87463e9585ac15db6c8271462068a62",
+    "license": "OFL-1.1",
+    "license_path": "fonts/fugaz-one/OFL.txt",
+    "copyright": "Copyright (c) 2011 by LatinoType Limitada; Reserved Font Names Fugaz and Fugaz One",
+    "url": "https://github.com/google/fonts/blob/0b82f9ec134be17ce44a1531636c81dacf8f7f1d/ofl/fugazone/FugazOne-Regular.ttf",
+    "revision": "0b82f9ec134be17ce44a1531636c81dacf8f7f1d",
+    "document_path": "originals/abx2t/fugaz-one.docx",
+    "document_sha256": "7ac555e1a83260abeb31bddd660183d004935d87a122807cc5801d28644a3a4e",
+    "document_license": "AGPL-3.0-or-later",
+    "document_copyright": "Copyright (C) 2026 Hugo Lagouardat (Abnd); generated by build/font_test.py --write-fixture"
+  },
+  "known_content_issues": [
+    {
+      "case": "word-rtl",
+      "format": "pdf",
+      "message": "expected source text absent from PDF extraction",
+      "issue": "https://github.com/abnd-corp/AbX2T/issues/16",
+      "scope": "PDF text extraction; manual visual review remains separate"
+    },
+    {
+      "case": "word-shapes",
+      "format": "txt",
+      "message": "expected source text absent from TXT conversion",
+      "issue": "https://github.com/abnd-corp/AbX2T/issues/17",
+      "scope": "Text in drawing/textbox objects omitted from TXT"
+    }
+  ]
+}

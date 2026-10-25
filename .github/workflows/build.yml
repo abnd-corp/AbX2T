@@ -43,6 +43,10 @@ jobs:
         with:
           dotnet-version: 10.0.x
 
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.12'
+
       - name: Cache ONLYOFFICE release download
         uses: actions/cache@v4
         with:
@@ -76,11 +80,12 @@ jobs:
         run: bash build/package_linux.sh
 
       - name: Publish (NativeAOT)
+        id: publish
         run: dotnet publish src/Abx2t.csproj -c Release
 
       - name: Install fonts for the smoke test (Linux)
         if: runner.os == 'Linux'
-        run: sudo apt-get update -q && sudo apt-get install -qy fonts-liberation
+        run: sudo apt-get update -q && sudo apt-get install -qy fonts-liberation poppler-utils
 
       - name: Smoke test (Windows)
         if: runner.os == 'Windows'
@@ -90,6 +95,37 @@ jobs:
       - name: Smoke test (Unix)
         if: runner.os != 'Windows'
         run: bash build/smoke_test.sh ${{ matrix.exe }}
+
+      - name: Original document corpus (offline, known content issues reported)
+        if: ${{ !cancelled() && steps.publish.outcome == 'success' }}
+        shell: bash
+        run: |
+          extra=()
+          if [[ "${{ runner.os }}" == Linux ]]; then extra+=(--require-pdf-tools); fi
+          python build/corpus_test.py --exe '${{ matrix.exe }}' --offline --allow-known-content-issues "${extra[@]}" --output dist/test-renders/corpus
+
+      - name: Missing font and manually added font
+        if: ${{ !cancelled() && steps.publish.outcome == 'success' }}
+        run: python build/font_test.py --exe ${{ matrix.exe }} --output dist/test-renders/fonts
+
+      - name: CLI, batch and script regression tests
+        if: ${{ !cancelled() && steps.publish.outcome == 'success' }}
+        shell: bash
+        run: |
+          extra=()
+          if [[ "${{ runner.os }}" != Windows ]]; then extra+=(--test-timeout); fi
+          python build/cli_test.py --exe '${{ matrix.exe }}' "${extra[@]}" --output dist/test-renders/cli
+
+      - name: Upload test outputs and diagnostics
+        if: ${{ !cancelled() && steps.publish.outcome == 'success' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-renders-${{ matrix.platform }}
+          path: dist/test-renders/
+          if-no-files-found: error
+
+      - name: Assemble versioned test renders
+        run: python build/package_test_renders.py --platform ${{ matrix.platform }}
 
       - name: Assemble distribution zip
         shell: bash
@@ -117,7 +153,9 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: ${{ env.DIST_NAME }}
-          path: dist/*
+          path: |
+            dist/*.zip
+            dist/*.sha256
           if-no-files-found: error
 
       - name: Attach to the GitHub release (tag builds)
@@ -129,4 +167,4 @@ jobs:
           tag="${GITHUB_REF_NAME}"
           gh release view "$tag" >/dev/null 2>&1 || \
             gh release create "$tag" --title "AbX2T $tag" --generate-notes || true
-          gh release upload "$tag" dist/* --clobber
+          gh release upload "$tag" dist/*.zip dist/*.sha256 --clobber
