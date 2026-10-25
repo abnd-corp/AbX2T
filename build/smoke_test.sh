@@ -2,8 +2,8 @@
 # AbX2T - Copyright (C) 2026 Hugo Lagouardat (Abend-core)
 # SPDX-License-Identifier: AGPL-3.0-or-later
 #
-# Smoke test: converts build/testdata/sample.docx to PDF and TXT with a real Abx2t
-# run (extraction + font generation + x2t) and checks the outputs are plausible.
+# Smoke test: exercises DOCX/ODT and CSV/XLSX conversions, PDF output and batch mode
+# with a real Abx2t run (extraction + font generation + x2t), checking output content.
 # This is the end-to-end gate for CI and for validating a machine or a bundle bump.
 #
 # Usage: bash build/smoke_test.sh [path/to/Abx2t]
@@ -14,7 +14,7 @@
 set -uo pipefail
 
 repo=$(cd -- "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
-sample="$repo/build/testdata/sample.docx"
+sample="$repo/testdata/original/abx2t/sample.docx"
 out=$(mktemp -d "${TMPDIR:-/tmp}/abx2t_smoke.XXXXXX")
 trap 'rm -rf "$out"' EXIT
 
@@ -32,7 +32,10 @@ else
 fi
 
 echo "== --version"
-run --version || fail "--version exited with $?"
+version=$(run --version) || fail "--version exited with $?"
+echo "$version"
+expected=$(sed -n 's/^ONLYOFFICE_CORE_BUILD=//p' "$repo/VERSIONS" | tr -d '\r')
+[[ -n "$expected" && "$version" == *"core build $expected)"* ]] || fail "executable version does not match VERSIONS"
 
 echo "== docx -> pdf"
 run --timeout 10 "$sample" "$out/sample.pdf" || fail "docx->pdf conversion exited with $?"
@@ -43,6 +46,20 @@ head -c 4 "$out/sample.pdf" | grep -q '%PDF' || fail "sample.pdf does not start 
 echo "== docx -> txt"
 run --timeout 10 "$sample" "$out/sample.txt" || fail "docx->txt conversion exited with $?"
 grep -q "quick brown fox" "$out/sample.txt" || fail "converted text does not contain the sample sentence"
+
+echo "== docx -> odt -> txt"
+run --timeout 10 "$sample" "$out/sample.odt" || fail "docx->odt conversion failed"
+run --timeout 10 "$out/sample.odt" "$out/roundtrip.txt" || fail "odt->txt conversion failed"
+grep -q "quick brown fox" "$out/roundtrip.txt" || fail "ODT round-trip lost the sample sentence"
+
+echo "== csv -> xlsx -> csv/pdf"
+printf 'Name,Value\nAbx2t,42\n' > "$out/table.csv"
+run --timeout 10 "$out/table.csv" "$out/table.xlsx" || fail "csv->xlsx conversion failed"
+run --timeout 10 "$out/table.xlsx" "$out/roundtrip.csv" || fail "xlsx->csv conversion failed"
+grep -q 'Abx2t' "$out/roundtrip.csv" || fail "XLSX round-trip lost the text cell"
+grep -q '42' "$out/roundtrip.csv" || fail "XLSX round-trip lost the numeric cell"
+run --timeout 10 "$out/table.xlsx" "$out/table.pdf" || fail "xlsx->pdf conversion failed"
+head -c 4 "$out/table.pdf" | grep -q '%PDF' || fail "table.pdf does not start with %PDF"
 
 echo "== batch mode"
 mkdir -p "$out/batch_in" "$out/batch_out"

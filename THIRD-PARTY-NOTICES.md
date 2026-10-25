@@ -13,15 +13,15 @@ source code, in accordance with AGPLv3 obligations (section 6, "Corresponding So
   license as this repository)
 - **Bundled components**:
   - `x2t/bin/windows-x86_64/`: the `x2t.exe` binary and its DLLs (conversion engine), version
-    **9.4.0.129** (read from the binary's own metadata). Bundled format converters (DjVuFile,
+    **10.0.0.169** (read from the binary's own metadata). Bundled format converters (DjVuFile,
     HwpFile, OFDFile, IWork, StarMath2OOXML, XpsFile, etc.): all present in ONLYOFFICE/core's
     public source tree — no proprietary or undocumented "black box" component.
   - `x2t/bin/macos-arm64/`: the same `x2t` binary and its `.framework` bundles, macOS build of
     the same conversion engine, sourced from an official ONLYOFFICE Desktop Editors release.
   - `x2t/bin/linux-x86_64/`: the same `x2t` binary, its `.so` libraries and ICU data files,
     Linux build of the same conversion engine, sourced from the official ONLYOFFICE Desktop
-    Editors Debian package (`onlyoffice-desktopeditors_9.4.0_amd64.deb`, from
-    <https://download.onlyoffice.com/repo/debian/>).
+    Editors Debian package (`onlyoffice-desktopeditors_10.0.0_amd64.deb`, from
+    <https://github.com/ONLYOFFICE/DesktopEditors/releases/tag/v10.0.0>).
   - `x2t/sdkjs/`: JavaScript runtime (word/cell/slide/visio/pdf/common) of the same SDK.
     `x2t/sdkjs/common/AllFonts.js` is not upstream code: it is a font index generated locally
     on each machine by `allfontsgen`.
@@ -31,9 +31,9 @@ source code, in accordance with AGPLv3 obligations (section 6, "Corresponding So
   only packages them and invokes them as a subprocess from its own code
   (`src/Program.cs`).
 - **Corresponding source** (exact version match): ONLYOFFICE publishes the source for this
-  exact version under AGPLv3, tagged `v9.4.0.129`:
-  - <https://github.com/ONLYOFFICE/core/releases/tag/v9.4.0.129>
-  - <https://github.com/ONLYOFFICE/sdkjs/releases/tag/v9.4.0.129>
+  exact version under AGPLv3, tagged `v10.0.0.169`:
+  - <https://github.com/ONLYOFFICE/core/releases/tag/v10.0.0.169>
+  - <https://github.com/ONLYOFFICE/sdkjs/releases/tag/v10.0.0.169>
   - Desktop application shell (not bundled here, for reference):
     <https://github.com/ONLYOFFICE/DesktopEditors>
 
@@ -60,6 +60,9 @@ source code, in accordance with AGPLv3 obligations (section 6, "Corresponding So
   small tool used to index system fonts into `AllFonts.js`. Unlike x2t/sdkjs above, this
   source is committed directly in this repository (not just referenced), which is the
   simplest way to guarantee the Corresponding Source travels with the binary built from it.
+- **Source version**: the vendored subset follows tag `v10.0.0.169`, commit
+  `76af764fcb777291098c73728044249b6893af6a`. It includes the upstream
+  `DesktopEditor/graphics/pro/MemoryStorage.h` header required by this version.
 - **Modification**: at build time, `allfontsgen/build/scripts/prepare_generated_sources.sh`
   (macOS/Linux) and `build_windows.ps1` (Windows, inline) apply a small patch to one file,
   `DesktopEditor/fontengine/ApplicationFontsWorker.cpp`: they wrap the `SaveThumbnails`

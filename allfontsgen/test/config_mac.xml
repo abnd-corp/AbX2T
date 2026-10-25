@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Template: replace /path/to/AbX2T with the absolute path of this repository. -->
 <TaskQueueDataConvert>
-    <m_sFileFrom>/path/to/AbX2T/build/testdata/sample.docx</m_sFileFrom>
+    <m_sFileFrom>/path/to/AbX2T/testdata/original/abx2t/sample.docx</m_sFileFrom>
     <m_sFileTo>/path/to/AbX2T/allfontsgen/test/sample.pdf</m_sFileTo>
     <m_sAllFontsPath>/path/to/AbX2T/allfontsgen/output/macos-arm64/fonts/AllFonts.js</m_sAllFontsPath>
     <m_sFontDir>/path/to/AbX2T/allfontsgen/output/macos-arm64/fonts</m_sFontDir>

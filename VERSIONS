@@ -9,16 +9,16 @@
 
 # DesktopEditors release tag (3 components) -- used to build the download URLs:
 # https://github.com/ONLYOFFICE/DesktopEditors/releases/tag/v<ONLYOFFICE_VERSION>
-ONLYOFFICE_VERSION=9.4.0
+ONLYOFFICE_VERSION=10.0.0
 
 # Matching core/sdkjs build (4 components) -- tags on ONLYOFFICE/core and
 # ONLYOFFICE/sdkjs; this is the version x2t reports and the AGPL source pointer.
-ONLYOFFICE_CORE_BUILD=9.4.0.129
+ONLYOFFICE_CORE_BUILD=10.0.0.169
 
 # SHA-256 of the official release artifacts, one per platform. Fill these in when
 # bumping ONLYOFFICE_VERSION: run the fetch script once, copy the hash it prints.
 # An empty value makes the fetch script print the downloaded hash instead of
 # failing, so a new version can be bootstrapped.
-SHA256_MACOS_DMG=e965be2222609add6b5a70baa2a8cdb599402491fb2925825d9039dcb154beb4
-SHA256_LINUX_DEB=4271434e81be42b1559fd989d24bf6d413482f278dc6a5e328202a4fc1a18649
-SHA256_WINDOWS_ZIP=22ae48a7813954e5079bff1ea211c6583aba67f34f2d0dbcb2431d4a20e94dfc
+SHA256_MACOS_DMG=9095cc8c46f1206237d690c7e146fada0d72dbf7f40c035cd5fd218b680c2deb
+SHA256_LINUX_DEB=2190edb4022a2ac2f6eee0f78815520f0e4ece1e8a1097c645a6f9b225c8b59c
+SHA256_WINDOWS_ZIP=54979d04f1cdca56deb0c62e0356355a45f392cdb54f04f6b7e436b1f44c3605

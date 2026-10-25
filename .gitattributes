@@ -38,3 +38,8 @@ x2t/bin/** -text
 *.docx binary
 *.xlsx binary
 *.pptx binary
+*.doc binary
+*.xls binary
+*.ods binary
+*.odp binary
+*.odt binary
