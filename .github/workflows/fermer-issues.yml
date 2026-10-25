@@ -1,0 +1,16 @@
+# Ferme les issues citées par « Closes #N » quand une PR est mergée dans dev (R3, R6) : GitHub ne le fait que sur main.
+name: Fermer les issues
+
+on:
+  pull_request:
+    types: [closed]
+    branches: [dev]
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  fermer:
+    if: github.event.pull_request.merged == true
+    uses: abnd-corp/gouvernance/.github/workflows/fermer-issues.yml@ef0db3d73f0e4208ef3a3ff29879e31e0f6abebe # gouvernance, 25 octobre 2026
